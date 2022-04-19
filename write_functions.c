@@ -1,92 +1,42 @@
 #include "main.h"
+#include <unistd.h>
 
-int p_char(va_list list)
+/**
+ * _putchar - writes the character c to stdout
+ * @c: The character to print
+ * Return: On success 1.
+ * On error, -1 is returned, and errno is set appropriately.
+ * Description: _putchar uses a local buffer of 1024 to call write
+ * as little as possible
+ */
+int _putchar(char c)
 {
-  /*p_char prints character in list at position in va_arg*/
-  _putchar(va_arg(list, int));
-  return (1);
+    static char buf[1024];
+    static int i;
+
+    if (c == -1 || i >= 1024)
+    {
+        write(1, &buf, i);
+        i = 0;
+    }
+    if (c != -1)
+    {
+        buf[i] = c;
+        i++;
+    }
+    return (1);
 }
 
-
-int p_string(va_list list)
+/**
+ * _puts - prints a string to stdout
+ * @str: pointer to the string to print
+ * Return: number of chars written
+ */
+int _puts(char *str)
 {
-  char *a;
-  int b;
+    register int i;
 
-  a = va_arg(list, char*);
-  if (a == NULL)
-    {
-      a = "(null)";
-    }
-  for (b = 0; a[b] != '\0'; b++)
-    {
-      _putchar(a[b]);
-    }
-  return (b);
-}
-
-int p_int(va_list list)
-{
-  int a, b = 0;
-  unsigned int x;
-
-  a = va_arg(list, int);
-    if (a < 0)
-      {
-	_putchar('_');
-	b = 1;
-	x = a * (-1);
-      }
-    else
-      {
-	x = a;
-      }
-  if (x > 9)
-    {
-      return (b + count_num(x));
-    }
-  _putchar(x + '\0');
-  return (1 + b);
-}
-
-int count_num(unsigned int n)
-{
-  int count = 0;
-  unsigned int x, z;
-  if (n != 0)
-    {
-      z = (n / 10);
-      x = (n % 10);
-      count += count_num(z);
-      count++;
-      _putchar(x + '\0');
-      return (count);
-    }
-  return (0);
-}
-
-int p_rot13(char *a)
-{
-  int count = 0;
-  int x = 0;
-  int s = 0;
-  char z[52] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz";
-  char b[52] = "NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm";
-
-  for (x = 0; a[x] != '\0'; x++)
-    {
-      for (s = 0; z[s] != '\0'; s++)
-	{
-	  if (a[x] == z[s])
-	    {
-	      count += _putchar(b[s]);
-	      break;
-	    }
-	}
-      if (s > 51)
-	{
-	  count += _putchar(a[x]);
-	}
-    }
-  return (count);
+    for (i = 0; str[i] != '\0'; i++)
+        _putchar(str[i]);
+    return (i);
 }
